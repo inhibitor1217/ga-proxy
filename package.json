@@ -1,0 +1,38 @@
+{
+  "name": "ga-proxy",
+  "version": "1.0.0",
+  "description": "A wrapper proxy server for Google Meausrement Protocol, which passes incoming GET requests to GA",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx nodemon --exec babel-node ./index.js",
+    "deploy": "npx serverless deploy --stage dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inhibitor1217/ga-proxy.git"
+  },
+  "author": "inhibitor1217 <inhibitor@kaist.ac.kr>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/inhibitor1217/ga-proxy/issues"
+  },
+  "homepage": "https://github.com/inhibitor1217/ga-proxy#readme",
+  "dependencies": {
+    "@koa/router": "^9.0.0",
+    "dotenv": "^8.2.0",
+    "koa": "^2.11.0",
+    "serverless-http": "^2.3.2",
+    "uuid": "^7.0.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/node": "^7.8.7",
+    "@babel/preset-env": "^7.9.5",
+    "babel-loader": "^8.1.0",
+    "nodemon": "^2.0.3",
+    "serverless": "^1.67.3",
+    "serverless-webpack": "^5.3.1",
+    "webpack": "^4.42.1",
+    "webpack-node-externals": "^1.7.2"
+  }
+}

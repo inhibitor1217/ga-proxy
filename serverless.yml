@@ -1,0 +1,28 @@
+service:
+  name: ga-proxy
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: ap-northeast-2
+  stage: dev
+  environment:
+    APP_ENV: deployment
+    APP_NAME: ga-proxy
+    GA_TRACK_ID: ${file(${env:CONFIG_FILE, './config.json'}):ga_track_id}
+
+plugins:
+  - serverless-webpack
+
+functions:
+  app:
+    handler: index.handler
+    events:
+      - http:
+          path: /
+          method: GET
