@@ -2,6 +2,14 @@
 
 ## Running the server
 
+### Configuration
+To set up, write your [GA track id](https://support.google.com/analytics/thread/13109681?hl=en) on `config.json` or some other file.
+```json
+{
+    "ga_track_id": "UA-XXXXXX-Y" // your google analytics track id
+}
+```
+
 ### Local server
 ```bash
 $ npm run dev
