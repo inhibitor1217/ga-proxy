@@ -10,6 +10,11 @@ To set up, write your [GA track id](https://support.google.com/analytics/thread/
 }
 ```
 
+### Installation
+```bash
+$ npm install
+```
+
 ### Local server
 ```bash
 $ npm run dev
@@ -56,6 +61,6 @@ Is there any events that can be invoked from notion? (e.g. toggle dropdown)
 - Page links can also invoke new HTTP requests (embed image urls in the linked page)
 
 - [QUERY] Event Category: `ec=Category`
-- [QUERY] Event Action: `ec=Action`
+- [QUERY] Event Action: `ea=Action`
 - [QUERY] Event Label: `el=Label`
 - [QUERY] Event Value: `ev=42`

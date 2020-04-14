@@ -19,6 +19,7 @@
   "homepage": "https://github.com/inhibitor1217/ga-proxy#readme",
   "dependencies": {
     "@koa/router": "^9.0.0",
+    "axios": "^0.19.2",
     "dotenv": "^8.2.0",
     "koa": "^2.11.0",
     "serverless-http": "^2.3.2",
