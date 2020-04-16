@@ -68,7 +68,6 @@ routes.get('/', async (ctx) => {
     };
 
     const queryString = buildQueryString(query);
-    console.log(query, queryString);
 
     await axios.post(
         GOOGLE_ANALYTICS_URL,

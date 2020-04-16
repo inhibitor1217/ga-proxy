@@ -15,6 +15,11 @@ provider:
     APP_ENV: deployment
     APP_NAME: ga-proxy
     GA_TRACK_ID: ${file(${env:CONFIG_FILE, './config.json'}):ga_track_id}
+    DOMAIN: 
+      Fn::Join:
+        - ''
+        - - Ref: ApiGatewayRestApi
+          - '.execute-api.ap-northeast-2.amazonaws.com'
 
 plugins:
   - serverless-webpack
