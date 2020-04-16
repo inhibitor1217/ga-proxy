@@ -1,26 +1,28 @@
 # ga-proxy
 
-## Running the server
+## 프록시 서버 실행
 
-### Configuration
-To set up, write your [GA track id](https://support.google.com/analytics/thread/13109681?hl=en) on `config.json` or some other file.
+### 설정
+설정을 위해, [GA track id](https://support.google.com/analytics/thread/13109681?hl=en)를 프로젝트 루트 디렉토리에 `config.json` 파일, 또는 원하는 파일에 작성하세요.
+
+#### 예시
 ```json
 {
     "ga_track_id": "UA-XXXXXX-Y" // your google analytics track id
 }
 ```
 
-### Installation
+### 설치
 ```bash
 $ npm install
 ```
 
-### Local server
+### 로컬 실행
 ```bash
 $ npm run dev
 ```
 
-### Deploy on AWS
+### AWS에 서버리스로 배포하기
 ```bash
 // uses config.json by default
 $ npm run deploy
@@ -29,38 +31,29 @@ $ npm run deploy
 $ CONFIG_FILE=config.json npm run deploy
 ```
 
-## Google Measurement Protocol Parameters
+## 노션에 GA 연결하기
 
-### Required
-- [STATIC] Protocol version: `v=1`
-- [GLOBAL] Measurement id (track id): `tid=UA-XXXXXX-Y`
-- [PER_SESSION] Client id: `cid=35009a79-1a05-49d7-b876-2b884d0f825b`
-    - Should control this in proxy server, by identifying requests from same ip address
-    - Should be uuidv4
-- [QUERY] Hit type: `t=pageview` or `t=event`
+1. 먼저 프록시 서버를 배포하세요.
+2. 프록시 서버의 주소를 잘 기억해 둡니다.
+    - 아마 `https://XXXXXXXXXX.execute-api.ap-northeast-2.amazonaws.com/dev` 와 같은 형태입니다.
+3. 노션에 이미지를 추가합니다.
+    - "Embed Link" 를 선택하고, 추적하고 싶은 페이지나 이벤트에 따라 다음과 같은 링크를 입력합니다.
+```
+https://XXXXXXXXXX.execute-api.ap-northeast-2.amazonaws.com/dev?<쿼리 스트링>
+```
+- 쿼리 스트링은 다음과 같이 입력합니다.
+    -  **(필수)** `type`: 페이지 트래킹이면 `pageview`, 이벤트 트래킹이면 `event`
+    - `page`: 페이지 트래킹의 경우, 트래킹할 페이지 세부 url
+    - `title`: 페이지 트래킹의 경우, 트래킹할 페이지의 제목
+    - `ecategory`: 이벤트 트래킹의 경우, 트래킹할 이벤트 카테고리
+    - `eaction`: 이벤트 트래킹의 경우, 트래킹할 이벤트 액션
+    - `elabel`: 이벤트 트래킹의 경우, 트래킹할 이벤트 라벨
+    - `evalue`: 이벤트 트래킹의 경우, 트래킹할 이벤트의 값
+- 예시 1) 노션 페이지에 들어갔을 때, `/notion-page` 페이지에 사용자수가 기록되길 원하는 경우
+    - 쿼리 스트링: `https://XXXXXXXXXX.execute-api.ap-northeast-2.amazonaws.com/dev?type=pageview&page=notion-page&title=notion-page`
+    - ![exp-1](images/1.png)
+- 예시 2) 앞 예시와 이어서, 토글을 내렸을 때 `toggle` 카테고리의 `toggle-content` 액션이 기록되길 원하는 경우
+    - 쿼리 스트링: `https://XXXXXXXXXX.execute-api.ap-northeast-2.amazonaws.com/dev?type=event&page=notion-page&ecategory=toggle&eaction=toggle-content`
+    - ![exp-2](images/2.png)
 
-### Optional
-- [STATIC] Data source: `ds=web`
-- [PER_SESSION] Session control: `sc=start` or `sc=end`
-    - Could control this in proxy...
-- [PER_REQUEST] IP Override: `uip=1.2.3.4`
-    - GA use this to infer location
-    - Could retrieve this from request IP
-- [PER_REQUEST] User Agent Override: `ua=Opera/9.80 (Windows NT 6.0) Presto/2.12.388 Version/12.14`
-    - Could retreive this from request user agent
-- [QUERY] Document Host Name: `dh=example.com`
-    - Set this to host (e.g. notion.so)
-- [QUERY] Document Path: `dp=/path`
-    - Set this to page path
-- [QUERY] Document Title: `dt=title`
-    - Set this to page title
 
-## Events
-Is there any events that can be invoked from notion? (e.g. toggle dropdown)
-- Toggle dropdown invokes new HTTP request (since it loades hidden image under toggle), so it can be recorded
-- Page links can also invoke new HTTP requests (embed image urls in the linked page)
-
-- [QUERY] Event Category: `ec=Category`
-- [QUERY] Event Action: `ea=Action`
-- [QUERY] Event Label: `el=Label`
-- [QUERY] Event Value: `ev=42`

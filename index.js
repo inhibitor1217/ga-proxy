@@ -32,6 +32,12 @@ const config = {
 const GOOGLE_ANALYTICS_URL = 'https://www.google-analytics.com/collect';
 const CID_COOKIE = '__GA_CID__';
 
+const beacon = Buffer.alloc(
+    68,
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+    "base64"
+); // an empty image
+
 const app = new Koa();
 const routes = new Router();
 
@@ -44,8 +50,16 @@ function buildQueryString(query) {
 
 routes.get('/', async (ctx) => {
 
-    const { t, dh, dp, dt, ec, ea, el, ev } = ctx.request.query;
-    const userQuery = { t, dh, dp, dt, ec, ea, el, ev };
+    const { type, page, title, ecategory, eaction, elabel, evalue } = ctx.request.query;
+    const userQuery = {
+        t: type, 
+        dp: page, 
+        dt: title, 
+        ec: ecategory, 
+        ea: eaction, 
+        el: elabel, 
+        ev: evalue
+    };
 
     const session = {
         cid: ctx.cookies.get(CID_COOKIE)
@@ -72,13 +86,13 @@ routes.get('/', async (ctx) => {
     await axios.post(
         GOOGLE_ANALYTICS_URL,
         queryString
-    )
-    .then(response => {
-        ctx.status = 200;
-    })
-    .catch(e => {
-        ctx.status = 400;
-    });
+    );
+
+    ctx.status = 200;
+    ctx.set('Cache-Control', 'no-cache, no-store, must-revalidate'); // to invoke request every time
+    ctx.set('Content-Type', 'image/gif');
+    ctx.set('Content-Length', beacon.length);
+    ctx.body = beacon;
 
 });
 
