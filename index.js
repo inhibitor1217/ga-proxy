@@ -4,7 +4,7 @@ import fs from 'fs';
 import Koa from 'koa';
 import Router from '@koa/router';
 import axios from 'axios';
-import uuid from 'uuid';
+import { v4 } from 'uuid';
 import serverless from 'serverless-http';
 
 if (process.env.APP_ENV === 'local') {
@@ -30,6 +30,7 @@ const config = {
 };
 
 const GOOGLE_ANALYTICS_URL = 'https://www.google-analytics.com/collect';
+const CID_COOKIE = '__GA_CID__';
 
 const app = new Koa();
 const routes = new Router();
@@ -47,8 +48,18 @@ routes.get('/', async (ctx) => {
     const userQuery = { t, dh, dp, dt, ec, ea, el, ev };
 
     const session = {
-        cid: '850aaf48-42bb-498e-97df-09e31b56d59c'
+        cid: ctx.cookies.get(CID_COOKIE)
     };
+
+    if (!session.cid) {
+        session.cid = v4();
+        session.sc = 'start';
+        ctx.cookies.set(CID_COOKIE, session.cid, {
+            httpOnly: true,
+            maxAge: 4 * 60 * 60 * 1000, // expires in 4h
+            domain: process.env.DOMAIN
+        });
+    }
  
     const query = {
         ...config,
