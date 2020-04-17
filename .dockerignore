@@ -1,0 +1,11 @@
+.git/
+node_modules/
+.serverless/
+*.swp
+README.md
+images/
+package-lock.json
+npm-*.log*
+.gitignore
+.dockerignore
+.env

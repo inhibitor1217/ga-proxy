@@ -12,7 +12,8 @@ if (process.env.APP_ENV === 'local') {
 }
 
 function getConfig() {
-    if (process.env.APP_ENV === 'local') {
+    if (process.env.APP_ENV === 'local'
+        || process.env.APP_ENV === 'docker') {
         const config = JSON.parse(fs.readFileSync(path.resolve(__dirname, process.env.CONFIG_FILE || 'config.json')));
         return { tid: config.ga_track_id };
     }
@@ -98,7 +99,8 @@ routes.get('/', async (ctx) => {
 
 app.use(routes.routes()).use(routes.allowedMethods());
 
-if (process.env.APP_ENV === 'local') {
+if (process.env.APP_ENV === 'local' 
+    || process.env.APP_ENV === 'docker') {
     app.listen(process.env.PORT, () => {
         console.log(`${process.env.APP_NAME} server listening from port ${process.env.PORT}`);
     });

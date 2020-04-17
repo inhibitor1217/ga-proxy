@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "npx nodemon --exec babel-node ./index.js",
+    "start": "babel-node ./index.js",
     "deploy": "npx serverless deploy --stage dev"
   },
   "repository": {
