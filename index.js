@@ -35,7 +35,7 @@ const CID_COOKIE = '__GA_CID__';
 
 const beacon = Buffer.alloc(
     68,
-    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQYV2NgAAIAAAUAAarVyFEAAAAASUVORK5CYII=",
     "base64"
 ); // an empty image
 
@@ -90,11 +90,19 @@ routes.get('/', async (ctx) => {
     );
 
     ctx.status = 200;
+    ctx.set('Access-Control-Allow-Origin', '*');
     ctx.set('Cache-Control', 'no-cache, no-store, must-revalidate'); // to invoke request every time
-    ctx.set('Content-Type', 'image/gif');
-    ctx.set('Content-Length', beacon.length);
+    ctx.set('Content-Type', 'image/png');
     ctx.body = beacon;
 
+});
+
+routes.head('/', async (ctx) => {
+    ctx.status = 200;
+    ctx.set('Access-Control-Allow-Origin', '*');
+    ctx.set('Cache-Control', 'no-cache, no-store, must-revalidate'); // to invoke request every time
+    ctx.set('Content-Type', 'image/png');
+    ctx.body = beacon;
 });
 
 app.use(routes.routes()).use(routes.allowedMethods());
@@ -106,4 +114,8 @@ if (process.env.APP_ENV === 'local'
     });
 }
 
-export const handler = serverless(app);
+const serverlessApp = serverless(app, { binary: ['image/*'] });
+export const handler = async (event, context) => {
+    const response = serverlessApp(event, context);
+    return Object.assign(response, { isBase64Encoded: true });
+};

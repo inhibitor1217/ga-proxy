@@ -20,6 +20,9 @@ provider:
         - ''
         - - Ref: ApiGatewayRestApi
           - '.execute-api.ap-northeast-2.amazonaws.com'
+  apiGateway:
+    binaryMediaTypes:
+      - '*/*'
 
 plugins:
   - serverless-webpack
@@ -30,4 +33,4 @@ functions:
     events:
       - http:
           path: /
-          method: GET
+          method: ANY
