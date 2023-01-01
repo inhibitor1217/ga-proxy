@@ -30,11 +30,11 @@
     "@babel/core": "^7.9.0",
     "@babel/node": "^7.8.7",
     "@babel/preset-env": "^7.9.5",
-    "babel-loader": "^8.1.0",
+    "babel-loader": "^8.3.0",
     "nodemon": "^2.0.3",
     "serverless": "^1.67.3",
     "serverless-webpack": "^5.3.1",
-    "webpack": "^4.42.1",
+    "webpack": "^5.75.0",
     "webpack-node-externals": "^1.7.2"
   }
 }
